@@ -1,2 +1,8 @@
 .vs
 Activity.sln.DotSettings.user
+/Task.Test/bin/Debug/net6.0
+/Task.Test/obj/Debug/net6.0
+/Task.Test/obj
+/TaskAPI/bin/Debug/net6.0
+/TaskAPI/obj/Debug/net6.0
+/TaskAPI/obj

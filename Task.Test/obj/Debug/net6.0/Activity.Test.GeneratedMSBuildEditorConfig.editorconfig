@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Activity.Test
-build_property.ProjectDir = C:\Users\davim\source\repos\TaskAPI\Task.Test\
+build_property.ProjectDir = C:\Users\davim\source\repos\daviifreitas\todolist\Task.Test\

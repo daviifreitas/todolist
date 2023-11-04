@@ -1,11 +1,11 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Activity.API.ApiModel;
+﻿using Activity.API.ApiModel;
 using Activity.API.Entities;
 using Activity.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Activity.API.Controllers;
 
@@ -14,13 +14,13 @@ namespace Activity.API.Controllers;
 [Route("[controller]")]
 public class ActivityTicketController : ControllerBase
 {
-    private readonly IActivityTicketRepository _ActivityTicketRepository;
+    private readonly IActivityTicketRepository _activityTicketRepository;
     private readonly IConfiguration _config;
 
 
     public ActivityTicketController(IActivityTicketRepository ActivityTicketRepository, IConfiguration config)
     {
-        _ActivityTicketRepository = ActivityTicketRepository;
+        _activityTicketRepository = ActivityTicketRepository;
         _config = config;
     }
 
@@ -36,53 +36,105 @@ public class ActivityTicketController : ControllerBase
     [Route("GetTasks")]
     public async Task<IActionResult> GetAll()
     {
-        List<ActivityTicket> activities = await _ActivityTicketRepository.GetAllAsync();
-        return Ok(activities);
+        try
+        {
+            List<ActivityTicket> activities = await _activityTicketRepository.GetAllAsync();
+            return Ok(activities);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet]
     [Route("GetById/{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        ActivityTicket? taskFromDb = await _ActivityTicketRepository.GetByIdAsync(id);
-        return Ok(taskFromDb);
+        try
+        {
+            ActivityTicket? taskFromDb = await _activityTicketRepository.GetByIdAsync(id);
+            return Ok(taskFromDb);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpPost]
     [Route("Create")]
     public async Task<IActionResult> Create([FromBody] ActivityTicketApiModel model)
     {
-        ActivityTicket activityTicketForCreate = model;
-        bool isTaskCreated = await _ActivityTicketRepository.AddAsync(activityTicketForCreate);
-        string message = isTaskCreated ? "ActivityTicketTicket created successfully" : "ActivityTicketTicket creation failed";
-        if (isTaskCreated)
+        try
         {
-            return Ok(message);
+            ActivityTicket activityTicketForCreate = model;
+            bool isTaskCreated = await _activityTicketRepository.AddAsync(activityTicketForCreate);
+            string message = isTaskCreated ? "ActivityTicketTicket created successfully" : "ActivityTicketTicket creation failed";
+            if (isTaskCreated)
+            {
+                return Ok(message);
+            }
+            return BadRequest(message);
         }
-        return BadRequest(message);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
+    [HttpPost]
+    [Route("Update")]
+    public async Task<IActionResult> Update(int id, [FromBody] ActivityTicketApiModel modelForUpdate)
+    {
+        try
+        {
+            ActivityTicket? activityTicketForUpdate = await _activityTicketRepository.GetByIdAsync(id);
+
+            if (activityTicketForUpdate is null)
+            {
+                return BadRequest("ActivityTicketTicket not found");
+            }
+
+            modelForUpdate.UpdateEntity(activityTicketForUpdate);
+            bool hasActivityTicketUpdated = await _activityTicketRepository.UpdateAsync(activityTicketForUpdate);
+            string message = hasActivityTicketUpdated ? "ActivityTicketTicket updated successfully" : "ActivityTicketTicket updation failed";
+
+            return Ok(message);
+        }
+        catch (Exception exception)
+        {
+            return BadRequest("Any exception has throws in application");
+        }
+    }
 
     [HttpGet]
     [Route("Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        ActivityTicket? taskForDelete = await _ActivityTicketRepository.GetByIdAsync(id);
-
-        if (taskForDelete == null)
+        try
         {
-            return BadRequest("ActivityTicketTicket not found");
+            ActivityTicket? taskForDelete = await _activityTicketRepository.GetByIdAsync(id);
+
+            if (taskForDelete == null)
+            {
+                return BadRequest("ActivityTicketTicket not found");
+            }
+
+            bool isTaskDeleted = await _activityTicketRepository.DeleteAsync(id);
+
+            string message = isTaskDeleted ? "ActivityTicketTicket deleted successfully" : "ActivityTicketTicket deletion failed";
+
+            if (isTaskDeleted)
+            {
+                return Ok(message);
+            }
+            return BadRequest(message);
         }
-
-        bool isTaskDeleted = await _ActivityTicketRepository.DeleteAsync(id);
-
-        string message = isTaskDeleted ? "ActivityTicketTicket deleted successfully" : "ActivityTicketTicket deletion failed";
-
-        if (isTaskDeleted)
+        catch (Exception e)
         {
-            return Ok(message);
+            return BadRequest(e.Message);
         }
-        return BadRequest(message);
     }
 
     private string GenerateToken()

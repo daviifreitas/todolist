@@ -6,3 +6,5 @@ Activity.sln.DotSettings.user
 /TaskAPI/bin/Debug/net6.0
 /TaskAPI/obj/Debug/net6.0
 /TaskAPI/obj
+/Task.Test/bin/Release/net6.0/CoverletSourceRootsMapping
+/Task.Test/obj/Debug/net6.0/Activity.Test.GeneratedMSBuildEditorConfig.editorconfig

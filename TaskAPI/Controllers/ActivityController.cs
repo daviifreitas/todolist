@@ -83,7 +83,7 @@ public class ActivityTicketController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPatch]
     [Route("Update")]
     public async Task<IActionResult> Update(int id, [FromBody] ActivityTicketApiModel modelForUpdate)
     {
@@ -108,7 +108,7 @@ public class ActivityTicketController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpDelete]
     [Route("Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {

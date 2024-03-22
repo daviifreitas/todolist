@@ -2,5 +2,7 @@
 {
     public interface IActivityTicketRepository : IRepositoryBase<Entities.ActivityTicket>
     {
+
+        public void returnValue() { }
     }
 }

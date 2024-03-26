@@ -150,7 +150,7 @@ public class ActivityTicketController : ControllerBase
 
     }
 
-    private void SetACtivityTicketAsDone(ActivityTicket tiket)
+    private void SetActivityTicketAsDone(ActivityTicket tiket)
     {
         tiket.Status = ActivityStatus.Done;
     }

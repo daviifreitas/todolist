@@ -154,4 +154,9 @@ public class ActivityTicketController : ControllerBase
     {
         tiket.Status = ActivityStatus.Done;
     }
+
+    private void SetActivityTicketAsPending(ActivityTicket tiket)
+    {
+        tiket.Status = ActivityStatus.Pending;
+    }
 }

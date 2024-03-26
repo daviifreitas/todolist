@@ -149,4 +149,9 @@ public class ActivityTicketController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
 
     }
+
+    private void SetACtivityTicketAsDone(ActivityTicket tiket)
+    {
+        tiket.Status = ActivityStatus.Done;
+    }
 }

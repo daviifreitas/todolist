@@ -142,11 +142,21 @@ public class ActivityTicketController : ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        JwtSecurityToken token = new JwtSecurityToken(_config["JwtSettings:Key"],
+        JwtSecurityToken token = new JwtSecurityToken(_config["JwtSttings:Key"],
             _config["Jwt:Audience"],
             expires: DateTime.Now.AddHours(2),
             signingCredentials: credentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
 
+    }
+
+    private void SetActivityTicketAsDone(ActivityTicket tiket)
+    {
+        tiket.Status = ActivityStatus.Done;
+    }
+
+    private void SetActivityTicketAsPending(ActivityTicket tiket)
+    {
+        tiket.Status = ActivityStatus.Pending;
     }
 }

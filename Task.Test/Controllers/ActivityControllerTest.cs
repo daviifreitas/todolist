@@ -6,5 +6,6 @@ namespace Task.Test.Controllers
     {
         private void AddedSomeFunctionForTestIssueTracking() { }
         private void AddedAnotherFunctionForFixesIssue() { }
+        private void AddedAnotherFunctionForFixesIssueAgain() { }
     }
 }
